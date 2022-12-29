@@ -107,45 +107,67 @@
 
 import React , {useState} from "react";
 
+function useFormInputs(initialValue){
+  const [value,setValue] = useState('');
 
-function LoginForm(){
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
 
-  function handleChangeEmail(e){
-    setEmail(e.target.value);
+  function handleChange(e){
+    setValue(e.target.value);
   }
 
-  function handleChangePassword(e){
-    setPassword(e.target.value);
-  }
+  return {
+    value,
+    onChange:handleChange,
+  };
+}
 
+
+// function LoginForm(){
+//   const [email,setEmail] = useState('');
+//   const [password,setPassword] = useState('');
+
+//   function handleChangeEmail(e){
+//     setEmail(e.target.value);
+//   }
+
+//   function handleChangePassword(e){
+//     setPassword(e.target.value);
+//   }
+
+  //changes after using custom hook - useFormInputs()
   
-
-  return (
-    <form>
-      <div>Email</div>
-      <div>
-        <input
-        type="text" 
-        value={email}
-        onChange={handleChangeEmail} 
-        />
-        <br/>
-        <div>Password</div>
-        <input
-        type="password" 
-        value={password}
-        onChange={handleChangePassword} 
-        />
-        <br/>
-        
+  function LoginForm(){
+    const email = useFormInputs('');
+    const password = useFormInputs('');
+  
+    return (
+      <form>
+        <div>Email</div>
+        <div>
+          {/* <input */}
+          {/* // type="text" value={email} onChange={handleChangeEmail} />
+          //after using custom hook
+          // type="text" value={email.value} onChange={email.onchange} />
+          //using spread operator on above line of code */}
+          <input type="text" {...email} />
+          <br/>
+          <div>Password</div>
+          <input
+          type="password" 
+          // value={password}
+          // onChange={handleChangePassword}
+          // value={password.value}
+          // onChange={password.onchange} 
+          {...password}
+          />
+          <br/>
+          
       </div>
       <p>
         <strong><em>Email: </em></strong>
-        {email}
-        <strong><em>|Password: </em></strong>
-        {password}
+        {email.value} |
+        <strong><em>Password: </em></strong>
+        {password.value}
         
       </p>
     </form>
@@ -155,21 +177,11 @@ function LoginForm(){
 }
 
 function SignupForm(){
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
-  const [confirmPassword,setConfirmPassword] = useState('');
+  const email = useFormInputs('');
+  const password = useFormInputs('');
+  const confirmPassword = useFormInputs('');
 
-  function handleChangeEmail(e){
-    setEmail(e.target.value);
-  }
-
-  function handleChangePassword(e){
-    setPassword(e.target.value);
-  }
-
-  function handleChangeConfirmPassword(e){
-    setConfirmPassword(e.target.value);
-  }
+  
 
   return (
     <form>
@@ -177,31 +189,28 @@ function SignupForm(){
       <div>
         <input
         type="text" 
-        value={email}
-        onChange={handleChangeEmail} 
+        {...email}
         />
         <br/>
         <div>Password</div>
         <input
         type="password" 
-        value={password}
-        onChange={handleChangePassword} 
+        {...password}
         />
         <br/>
         <div>Confirm Password</div>
         <input
         type="password" 
-        value={confirmPassword}
-        onChange={handleChangeConfirmPassword} 
+        {...confirmPassword} 
         />
       </div>
       <p>
         <strong><em>Email: </em></strong>
-        {email}
-        <strong><em>|Password: </em></strong>
-        {password}
-        <strong><em>|Confirm Password: </em></strong>
-        {confirmPassword}
+        {email.value} |
+        <strong><em>Password: </em></strong>
+        {password.value} |
+        <strong><em>Confirm Password: </em></strong>
+        {confirmPassword.value}
       </p>
     </form>
   );
